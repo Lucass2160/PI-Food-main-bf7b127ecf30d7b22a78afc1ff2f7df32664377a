@@ -3,7 +3,9 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import getPageDetail from "../../redux/actions";
-import style from "./details.module.css";
+import Card from "react-bootstrap/Card";
+import Image from "react-bootstrap/Image";
+
 import loadSpeed from "../../img/loadSpeed.gif";
 
 function Details() {
@@ -23,38 +25,26 @@ function Details() {
 
   if (isLoading) {
     return (
-      <div>
-        <h1 className={style.loading}>Loading...</h1>
-        <img className={style.load} src={loadSpeed} alt="dasds" />
+      <div className="d-flex align-items-center justify-content-center vh-100">
+        <div>
+          <h1>Loading...</h1>
+          <img src={loadSpeed} alt="Loading..." />
+        </div>
       </div>
     );
   }
 
   return (
-    <div className={style.containerPrincipal}>
-      {console.log(data, "esto es data")}
-      <div className={style.container} key={data.id}>
-        <h1 className={style.name}>{data.name}</h1>
-        <p className={style.heal}>Health Score: {data.healthScore}</p>
-        <p className={style.diets}>{data.diet}</p>
-        <p className={style.summary}>
-          {data.summary.replace(/<\/?[^>]+(>|$)/g, "")}
-        </p>
-        <div className={style.containerStep}>
-          {data.steps?.map((e) => {
-            return (
-              <div className={style.stepContainer}>
-                <p className={style.stepNumber}>Step number: {e.number}</p>{" "}
-                <p className={style.step}>{e.step}</p>
-                {console.log(e.step, "step")}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className={style.containerImg}>
-        <img className={style.img} src={data.image} alt="" />
-      </div>
+    <div className="d-flex align-items-center justify-content-center vh-100 mb-5">
+      <Card style={{ width: "50%", display: "flex", margin: "20px" }}>
+        <Card.Body style={{ width: "100%" }}>
+          <Card.Title>{data.name}</Card.Title>
+          <Card.Text>Health Score: {data.healthScore}</Card.Text>
+          <Card.Text>{data.diet}</Card.Text>
+          <Card.Text>{data.summary.replace(/<\/?[^>]+(>|$)/g, "")}</Card.Text>
+        </Card.Body>
+      </Card>
+      <Image src={data.image} rounded style={{ margin: "20px" }} />
     </div>
   );
 }

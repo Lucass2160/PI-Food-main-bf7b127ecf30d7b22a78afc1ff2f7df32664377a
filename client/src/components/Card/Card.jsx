@@ -16,11 +16,25 @@ const Cards = ({ name, image, diets, resumen, id }) => {
     <Card className="mh-auto h-100">
       <Card.Img variant="top" src={image} />
       <Card.Body>
-        <Card.Title>{name}</Card.Title>
-        <Card.Text className="card-text">{resumen.split(" ").slice(0, 15).join(" ")} ...</Card.Text>
-        <div className="mt-auto d-flex align-items-center justify-content-end">
+        <Card.Title
+          className="mw-1"
+          style={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {name}
+        </Card.Title>
+
+        <Card.Text className="card-text">
+          {resumen.split(" ").slice(0, 15).join(" ")} ...
+        </Card.Text>
+        <div className="mt-2 mb-1 d-flex align-items-center justify-content-center ">
           <Link to={`/recipes/${id}`}>
-            <Button className="btn-view-more" variant="dark">View more</Button>
+            <Button className="btn-view-more" variant="light">
+              View more
+            </Button>
           </Link>
         </div>
       </Card.Body>

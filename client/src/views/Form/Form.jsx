@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 import { getAllDiet } from "../../redux/actions";
 import validate from "./validacionForm";
-import "./form.css";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  InputGroup,
+  FormControl,
+  FormGroup,
+  Alert,
+} from "react-bootstrap";
 
-
-
-
-
-const Form = () => {
+const FormComponent = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllDiet());
@@ -28,12 +32,7 @@ const Form = () => {
     steps: [],
   });
 
-  console.log(form);
-
-  const [error, setError] = useState({
-    ...form,
-  });
-
+  const [error, setError] = useState({ ...form });
 
   const changeHandlerDietas = (event) => {
     const { name, value, checked } = event.target;
@@ -51,7 +50,6 @@ const Form = () => {
   };
 
   const changeHandler = (event) => {
-    console.log(event.target.value, "SOY EL STRING");
     setError(validate({ ...form, [event.target.name]: event.target.value }));
     setForm({ ...form, [event.target.name]: event.target.value });
   };
@@ -67,7 +65,7 @@ const Form = () => {
   };
 
   const [stepsArr, setSteps] = useState([]);
-  console.log(stepsArr, "abc");
+
   const addStep = (event) => {
     event.preventDefault();
     const newStep = { number: stepsArr.length + 1, step: setpp.steps };
@@ -90,32 +88,35 @@ const Form = () => {
     if (!Object.keys(error).length) {
       axios
         .post("http://localhost:3001/recipes", form)
-        .then(() => alert("The recipe was created successfully"));
+        .then(() => alert("The recipe was created successfully"))
+        .catch((error) => console.error("Error:", error));
     } else {
       alert("Complete the required fields (*)");
     }
   };
 
   return (
-    <>
-      <div className="containerPrincipal">
-        <div className="subDiv">
-          <form className="subcontainerIzquierdo" onSubmit={submitHandler}>
-            <div className="mincontainer">
-              <label className="name">Recipe name *:</label>
-              <input
+    <Container
+      style={{ backgroundColor: "grey", borderRadius: "6px", marginTop: "10%" }}
+    >
+      <Row className="mt-3 container">
+        <Col>
+          <Form onSubmit={submitHandler}>
+            <FormGroup className="mincontainer">
+              <Form.Label className="name">Recipe name *:</Form.Label>
+              <FormControl
                 type="text"
                 onChange={changeHandler}
                 name="name"
                 className="input"
               />
-            </div>
+            </FormGroup>
 
-            {error.name && <p className="errors">{error.name}</p>}
+            {error.name && <Alert variant="danger" style={{marginTop:"5px"}}>{error.name}</Alert>}
 
-            <div className="mincontainer">
-              <label className="name">Health Score* :</label>
-              <input
+            <FormGroup className="mincontainer">
+              <Form.Label className="name">Health Score* :</Form.Label>
+              <Form.Control
                 type="range"
                 max={100}
                 min={1}
@@ -124,82 +125,58 @@ const Form = () => {
                 name="healthScore"
                 className="input"
               />
-            </div>
+            </FormGroup>
 
-            <div className="mincontainer">
-              <label className="name">Summary* :</label>
-              <input
+            <FormGroup className="mincontainer">
+              <Form.Label className="name">Summary* :</Form.Label>
+              <FormControl
                 type="text"
                 value={form.summary}
                 onChange={changeHandler}
                 name="summary"
                 className="input"
               />
-            </div>
+            </FormGroup>
 
-            {error.summary && <p className="errors">{error.summary}</p>}
+            {error.summary &&  <Alert variant="danger" style={{marginTop:"5px"}}>{error.summary}</Alert>}
 
-            <div className="mincontainer">
-              <label className="name">Image:</label>
-              <input
+            <FormGroup className="mincontainer">
+              <Form.Label className="name">Image:</Form.Label>
+              <FormControl
                 type="text"
                 value={form.image}
                 onChange={changeHandler}
                 name="image"
                 className="input"
               />
-            </div>
+            </FormGroup>
 
-            <p className="selecDiets">Select the diets *:</p>
+            <p className="selecDiets">Select the diets:</p>
 
             {error.diets && <p className="errors">{error.diets}</p>}
 
-            <div className="checkBox">
-              {data.map((diet) => {
-                return (
-                  <div key={diet} className="checkchic">
-                    <input
-                      type="checkbox"
-                      value={diet}
-                      onChange={changeHandlerDietas}
-                      name="diets"
-                    />
-                    <label>{diet}</label>
-                  </div>
-                );
-              })}
+            <div className="checkBox d-flex">
+              {data.map((diet) => (
+                <FormGroup key={diet} className="checkchic">
+                  <Form.Check
+                    type="checkbox"
+                    value={diet}
+                    onChange={changeHandlerDietas}
+                    name="diets"
+                    label={diet}
+                  />
+                </FormGroup>
+              ))}
             </div>
 
-            <button className="enviar" type="submit">
+            <Button className="enviar" type="submit">
               ENVIAR
-            </button>
-          </form>
-
-          <form className="mincontainerSteps" onSubmit={addStep}>
-            <div>
-              <label className="name">Steps: {count + 1} </label>
-              <input
-                type="text"
-                value={setpp.steps}
-                onChange={changeHandlersetpp}
-                name="steps"
-                className="input"
-              />
-            </div>
-            <div>
-              <button className="enviar2" type="submit">
-                Add step
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <div className="subcontainerDerecho">
-          <img src="../../img/food.png" alt="" />
-        </div>
-      </div>
-    </>
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
-export default Form;
+export default FormComponent;

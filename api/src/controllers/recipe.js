@@ -21,7 +21,7 @@ const getIdRecipeController = async (id) => {
     };
   } else {
     const { data } = await axios(
-      `https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5`
+      `https://api.spoonacular.com/recipes/${id}/information?apiKey=1ca2f2e0158a4007b974f8038badf39c`
     );
     return {
       id: data.id,

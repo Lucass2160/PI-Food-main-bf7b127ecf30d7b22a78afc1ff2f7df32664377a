@@ -3,9 +3,7 @@ import CardsContainer from "../../components/CardsContainer/CardsContainer";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllDiet, getRecipes } from "../../redux/actions";
 import Filter from "./Filters/Filter";
-import Spinner from "react-bootstrap/Spinner";
 import loadings from "../../img/loading.gif";
-import "./home.css";
 
 const Home = () => {
   const allDiet = useSelector((state) => state.diets);
@@ -29,7 +27,7 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <div className="container">
+    <div  className="container">
       {loading ? (
         <div className="d-flex justify-content-center align-items-center vh-100">
           <img
