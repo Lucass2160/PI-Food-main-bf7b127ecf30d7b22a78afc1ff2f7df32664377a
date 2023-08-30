@@ -7,7 +7,7 @@ import Footer from "./components/Footer/Footer";
 function App() {
   const location = useLocation();
   return (
-    <div style={{ backgroundColor: "rgb(244, 244, 244)" }}>
+    <div>
       {location.pathname !== "/" && <NavBar />}
       <Route exact path="/">
         <Landing />
